@@ -1,4 +1,4 @@
-# Contributing to [project name]
+# Contributing to social-context-alpha
 
 ## Overview
 Please note our general guidelines for contributing to NDCLab projects [here](https://ndclab.github.io/wiki/docs/contributing.html).
@@ -17,10 +17,9 @@ Please see the roadmap available on the [README.md](README.md) file of this repo
 
 
 ## Directory Structure
-:point_right: Update this section as appropriate for your repo, then delete this note before publishing.
 
 ```yml
-project-name
+social-context-alpha
 ├── code
 ├── containers
 ├── CONTRIBUTING.md
