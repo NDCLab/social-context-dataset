@@ -59,7 +59,7 @@ function verify_file
         fi
 
         # check if file contains only valid id's
-        mapfile -t ids < (cat $file_name | cut -d ',' -f36)
+        mapfile ids < <(cat $file_name | cut -d ',' -f36)
         unset ids[0]
 
         for val in "${!ids[@]}"; do
