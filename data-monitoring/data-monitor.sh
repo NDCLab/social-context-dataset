@@ -2,7 +2,7 @@
 IFS=$'\n'
 RAW_PATH="/home/data/NDClab/datasets/social-context-dataset/sourcedata/raw"
 CHECK_PATH="/home/data/NDClab/datasets/social-context-dataset/sourcedata/checked"
-PAVLOV = "pavlovia"
+PAVLOV="pavlovia"
 
 function verify_sub
 {
@@ -59,7 +59,7 @@ function verify_file
         fi
 
         # check if file contains only valid id's
-        mapfile -t ids < <(cat $file_name | cut -d ',' -f36)
+        mapfile -t ids < (cat $file_name | cut -d ',' -f36)
         unset ids[0]
 
         for val in "${!ids[@]}"; do
@@ -107,12 +107,12 @@ do
             # and contain correct ID's
             valid_name=$(verify_file $file_names $id)
             if [ "$valid_name" != 1 ]; then
-                echo "${array[$i]} $valid_name" 
+                echo "${array[$i]} $valid_name \\n" 
                 exit 9999 
             fi
 
             # if passes all checks, create and move to `checked` folder
-            echo "Data passes criteria, moving "
+            echo "\\t Data passes criteria, moving to $CHECK_PATH/$DIR/$PAVLOV/$subject \\n"
             mkdir $CHECK_PATH/$DIR/$PAVLOV/$subject 
             cp $RAW_PATH/$DIR/$PAVLOV/${sub_names[$i]} $CHECK_PATH/$DIR/$PAVLOV/$subject             
                 
