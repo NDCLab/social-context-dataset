@@ -9,7 +9,7 @@ function verify_sub
     name=$1
     # check if sub name contains unexpected chars
     if [[ $name = *[[:space:]]* ]]; then
-        echo "improper subject name, contains space."
+        echo "Improper subject name, contains space."
         return 1
     fi
     echo 1
@@ -17,9 +17,13 @@ function verify_sub
 
 function verify_file
 {
-    name=$2[@]
-    id=$3
-    arr=("${!name}")
+    elements=("$@")
+    ((last_idx=${#a[@]} - 1))
+    arr=${elements[last_idx]}
+    unset elements[last_idx]
+    id=$2
+
+    echo "testing first elem of array: ${arr[0]}"
 
     # set presence vars as 0
     flanker=0
@@ -28,6 +32,7 @@ function verify_file
 
     for i in "${!arr[@]}"; do
         file_name="${arr[$i]}"
+        echo "\\t Checking file $file_name"
         # skip if log file
         if [[ $FILE == *.log.gz ]]; then
             continue
@@ -59,7 +64,7 @@ function verify_file
         fi
 
         # check if file contains only valid id's
-        mapfile -t ids < (cat $file_name | cut -d ',' -f36)
+        mapfile -t ids < <(cat $file_name | cut -d ',' -f36)
         unset ids[0]
 
         for val in "${!ids[@]}"; do
@@ -67,9 +72,11 @@ function verify_file
                 echo "Improper id value in $file_name"
                 return 2
             fi
+	done
+    done
 
     # check if all 3 tasks appeared in file-group
-    if [[ flanker != 1 || dccs != 1 || nback != 1]]; then
+    if [[ flanker != 1 || dccs != 1 || nback != 1 ]]; then
         echo "Subject folder does not contain all tasks."
         return 3
     fi
@@ -103,9 +110,10 @@ do
 
             # store file names in array
             file_names=(*)
+
             # check if files contain all tasks, appropriatley named, 
             # and contain correct ID's
-            valid_name=$(verify_file $file_names $id)
+            valid_name=$(verify_file "${file_names[@]}" $id)
             if [ "$valid_name" != 1 ]; then
                 echo "${array[$i]} $valid_name \\n" 
                 exit 9999 
@@ -115,4 +123,6 @@ do
             echo "\\t Data passes criteria, moving to $CHECK_PATH/$DIR/$PAVLOV/$subject \\n"
             mkdir $CHECK_PATH/$DIR/$PAVLOV/$subject 
             cp $RAW_PATH/$DIR/$PAVLOV/${sub_names[$i]} $CHECK_PATH/$DIR/$PAVLOV/$subject             
-                
+        done
+    fi
+done        
