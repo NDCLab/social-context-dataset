@@ -100,8 +100,8 @@ do
         for i in "${!sub_names[@]}"; do
             subject=${sub_names[$i]}
 
- 	    # check accessibility of file system
-	    if ! [[ -x "$RAW_PATH/$DIR/$PAVLOV/$subject" ]]; then
+ 	        # check accessibility of file system
+	        if ! [[ -x "$RAW_PATH/$DIR/$PAVLOV/$subject" ]]; then
                 echo -e "\\t $subject is not accessible via your permissions \\n" 
                 continue
             fi
@@ -114,7 +114,7 @@ do
             sub_check=$(verify_sub $subject)
             res=$?
             if [ $res != 0 ]; then
-                echo "error: $subject $sub_check" 
+                echo "Error detected in $subject: $sub_check" 
                 continue 
             fi
             echo -e "\\t Checking files of $RAW_PATH/$DIR/$PAVLOV/$subject"
@@ -137,8 +137,8 @@ do
             # Create parent dirs if they do not exist yet
             if [ ! -e "$CHECK_PATH/$DIR" ]; then
             	mkdir $CHECK_PATH/$DIR
-	    fi
-	    if [ ! -e "$CHECK_PATH/$DIR/$PAVLOV" ]; then
+	        fi
+	        if [ ! -e "$CHECK_PATH/$DIR/$PAVLOV" ]; then
                 mkdir $CHECK_PATH/$DIR/$PAVLOV
             fi 
             # Delete prev checked data if it exists
