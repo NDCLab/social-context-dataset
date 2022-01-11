@@ -9,7 +9,7 @@ function verify_sub
     name=$1
     # check if sub name contains unexpected chars
     if [[ $name = *[[:space:]]* ]]; then
-        echo "Improper subject name, contains space."
+        echo "Error: Improper subject name, contains space."
         exit 1
     fi
     exit 0
@@ -42,16 +42,16 @@ function verify_files
         fi
         # check if file name contains unexpected chars
         if [[ $file_name = *[[:space:]]* ]]; then
-            echo -e "Improper file name $file_name, contains space."
-            exit 1
+            echo "Error: Improper file name $file_name, contains space."
+            continue
         fi
 
         # select standard portion of file
         segment=$(echo "$file_name" | grep -oP "ft-(flanker|dccs|nback)(-o)?_s\d_r\d_e\d")
         # check if file follows naming conv
         if [[ -z "$segment" ]]; then
-            echo -e "Improper file name $file_name, does not meet standard"
-            exit 1
+            echo "Error: Improper file name $file_name, does not meet standard"
+            continue
         fi
 
         # extract task
@@ -73,16 +73,16 @@ function verify_files
 
         for val in "${!ids[@]}"; do
             if [[ ${ids[$val]} != "$id" ]]; then
-                echo "Improper id value of ${ids[$val]} in $file_name. Must equal $id"
-                exit 2
+                echo "Error: Improper id value of ${ids[$val]} in $file_name. Must equal $id"
+                break
             fi
 	done
     done
 
     # check if all 3 tasks appeared in file-group
     if [[ $flanker != 1 || $dccs != 1 || $nback != 1 ]]; then
-        echo "Subject folder does not contain all tasks."
-        exit 3
+        echo "Error: Subject folder does not contain all tasks."
+        exit 1
     fi
     exit 0
 }
@@ -111,11 +111,11 @@ do
             id=${id::-1}
 
             # check if name is improperly named
-            valid_name=$(verify_sub $subject)
+            sub_check=$(verify_sub $subject)
             res=$?
             if [ $res != 0 ]; then
-                echo "error: $subject $valid_name" 
-                exit 9999 
+                echo "error: $subject $sub_check" 
+                continue 
             fi
             echo -e "\\t Checking files of $RAW_PATH/$DIR/$PAVLOV/$subject"
             cd $RAW_PATH/$DIR/$PAVLOV/$subject
@@ -125,24 +125,26 @@ do
 
             # check if files contain all tasks, appropriatley named, 
             # and contain correct ID's
-            valid_files=$(verify_files "${file_names[@]}" $id)
+            files_log=$(verify_files "${file_names[@]}" $id)
             res=$?
-            if [ $res != 0 ]; then
-                echo "error: $subject $valid_files \\n" 
-                exit 9999 
+            if [ $res != 0 || "$files_log" =~ "Error:" ]; then
+                echo -e "Error detected in $subject: \\n $files_log \\n" 
+                continue 
             fi
 
             # if passes all checks, create and move to `checked` folder
             echo -e "\\t Data passes criteria, moving to $CHECK_PATH/$DIR/$PAVLOV/$subject \\n"
+            # Create parent dirs if they do not exist yet
             if [ ! -e "$CHECK_PATH/$DIR" ]; then
             	mkdir $CHECK_PATH/$DIR
 	    fi
 	    if [ ! -e "$CHECK_PATH/$DIR/$PAVLOV" ]; then
                 mkdir $CHECK_PATH/$DIR/$PAVLOV
-            fi
-            if [ ! -e "$CHECK_PATH/$DIR/$PAVLOV/$subject" ]; then
-               mkdir $CHECK_PATH/$DIR/$PAVLOV/$subject
             fi 
+            # Delete prev checked data if it exists
+            if [ -e "$CHECK_PATH/$DIR/$PAVLOV/$subject" ]; then
+                rm -rf * $CHECK_PATH/$DIR/$PAVLOV/$subject
+            fi
             cp -r $RAW_PATH/$DIR/$PAVLOV/$subject $CHECK_PATH/$DIR/$PAVLOV/$subject             
         done
     fi
