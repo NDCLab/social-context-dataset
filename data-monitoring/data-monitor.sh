@@ -141,11 +141,7 @@ do
 	        if [ ! -e "$CHECK_PATH/$DIR/$PAVLOV" ]; then
                 mkdir $CHECK_PATH/$DIR/$PAVLOV
             fi 
-            # Delete prev checked data if it exists
-            if [ -e "$CHECK_PATH/$DIR/$PAVLOV/$subject" ]; then
-                rm -rf * $CHECK_PATH/$DIR/$PAVLOV/$subject
-            fi
-            cp -r $RAW_PATH/$DIR/$PAVLOV/$subject $CHECK_PATH/$DIR/$PAVLOV/$subject             
+            # cp -r $RAW_PATH/$DIR/$PAVLOV/$subject $CHECK_PATH/$DIR/$PAVLOV/$subject             
         done
     fi
 done        
