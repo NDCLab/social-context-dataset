@@ -127,7 +127,7 @@ do
             # and contain correct ID's
             files_log=$(verify_files "${file_names[@]}" $id)
             res=$?
-            if [ $res != 0 || "$files_log" =~ "Error:" ]; then
+            if [[ $res != 0 || "$files_log" =~ "Error:" ]]; then
                 echo -e "Error detected in $subject: \\n $files_log \\n" 
                 continue 
             fi
