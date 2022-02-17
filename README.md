@@ -37,7 +37,7 @@ This `main` branch contains completed releases for this project. For all work-in
 | Sophia Charest | research assistant |
 | Aitana Fischer | (past) research assistant |
 
-Learn more about us [here](www.ndclab.com/people).
+Learn more about us [here](https://www.ndclab.com/people).
 
 ## Contributing
 
