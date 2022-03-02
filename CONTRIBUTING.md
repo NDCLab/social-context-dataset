@@ -13,8 +13,6 @@ Please note our general guidelines for contributing to NDCLab projects [here](ht
 ## Roadmap
 Please see the roadmap available on the [README.md](README.md) file of this repository.
 
-:point_right: Keep the "Roadmap" text above but update the link to the `readme` for your repo. And, of course, delete this note before publishing the contributing file.
-
 
 ## Directory Structure
 
@@ -33,10 +31,7 @@ social-context-alpha
 ├── literature
 ├── materials
     ├──questionnaires
-    ├──task1
-          ├──protocol.md
-          ├──scripts
-          ├──stimuli
+    ├──readme.md (provides details on behavioral tasks)
 ├── notebook.md
 ├── README.md
 ├── sourcedata
