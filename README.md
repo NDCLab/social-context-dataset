@@ -33,10 +33,8 @@ This `main` branch contains completed releases for this project. For all work-in
 | Supervision | Dr. George Buzzell |
 | Data Collection | Renata Dickinson, Aitana Fishcer, Sophia Charest, Carlos Rodriguez, Isabel Khouly |
 
-Learn more about us [here](www.ndclab.com/people).
+Learn more about us [here](https://www.ndclab.com/people).
 
 ## Contributing
 
 If you are interested in contributing, please read our [CONTRIBUTING.md](CONTRIBUTING.md) file.
-
-:point_right: Keep the "Contributing" text above as the default NDCLab "blurb" to help visitors navigate the repo. But delete this note before publishing the readme file.
